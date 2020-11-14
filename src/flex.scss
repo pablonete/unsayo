@@ -1,11 +1,11 @@
-.flex {
-  display: flex;
-  align-items: baseline;
-}
-
 .flex-row {
   display: flex;
   flex-direction: row;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
 }
 
 .flex-grow {
@@ -79,6 +79,10 @@
   font-weight: 800;
 }
 
+.padding-16 {
+  padding: 16px;
+}
+
 .padding-h-16 {
   padding-left: 16px;
   padding-right: 16px;
@@ -95,6 +99,10 @@
 
 .rhythm-h-8 > :not(:first-child) {
   margin-left: 8px;
+}
+
+.rhythm-h-16 > :not(:first-child) {
+  margin-left: 16px;
 }
 
 .font-s {

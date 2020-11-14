@@ -13,7 +13,7 @@ function App() {
         />
         <div>Unsayo</div>
       </header>
-      <section>
+      <section className="padding-16">
         <SessionPage />
       </section>
     </div>
