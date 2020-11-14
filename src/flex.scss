@@ -1,0 +1,142 @@
+.flex {
+  display: flex;
+  align-items: baseline;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
+
+.flex-shrink {
+  flex: 0 0 auto;
+}
+
+.flex-noshrink {
+  flex-shrink: 0;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-center {
+  align-items: center;
+}
+
+.secondary-text {
+  color: darkgray;
+}
+
+.pe-lg {
+  font-size: 22px;
+  line-height: 14px;
+  vertical-align: middle;
+}
+
+.success-circle {
+  border-radius: 50%;
+  background-color: green;
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+}
+
+.failure-circle {
+  border-radius: 50%;
+  background-color: red;
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+}
+
+.margin-auto {
+  margin: auto;
+}
+
+.margin-8 {
+  margin: 8px;
+}
+
+.margin-h-16 {
+  margin-left: 16px;
+  margin-right: 16px;
+}
+
+.margin-right-8 {
+  margin-right: 8px;
+}
+
+.monospace {
+  font-family: monospace;
+}
+
+.strong-text {
+  font-weight: 800;
+}
+
+.padding-h-16 {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.padding-v-4 {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.rhythm-v-16 > :not(:first-child) {
+  margin-top: 16px;
+}
+
+.rhythm-h-8 > :not(:first-child) {
+  margin-left: 8px;
+}
+
+.font-s {
+  font-size: 0.8em;
+}
+
+.font-l {
+  font-size: 1.1em;
+}
+
+.font-xl {
+  font-size: 2em;
+}
+
+.image-height-l {
+  height: 10vmin;
+}
+
+.color-header {
+  background-color: #688cc4;
+  color: white;
+}
+
+.paragraph {
+  margin: 10px 14px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .infinite-spin {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

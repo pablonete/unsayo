@@ -1,24 +1,21 @@
 import React from "react";
-import "./App.scss";
-import logo from "./logo.svg";
+import logo from "./images/nicubunu_Musical_note.svg";
+import { SessionPage } from "./Views/SessionPage";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <div>
+      <header className="flex-row flex-center color-header font-xl">
+        <img
+          src={logo}
+          className="image-height-l infinite-spin margin-8"
+          alt="logo"
+        />
+        <div>Unsayo</div>
       </header>
+      <section>
+        <SessionPage />
+      </section>
     </div>
   );
 }
