@@ -4,6 +4,6 @@ import { SessionPage } from "./SessionPage";
 
 test("renders learn react link", () => {
   render(<SessionPage />);
-  const linkElement = screen.getByText(/session/i);
+  const linkElement = screen.getByText(/Empezar/i);
   expect(linkElement).toBeInTheDocument();
 });

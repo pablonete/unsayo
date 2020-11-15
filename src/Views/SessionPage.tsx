@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { diffDateToDuration } from "../utils/date";
 
 interface PlayRecord {
   title: string;
@@ -42,8 +43,10 @@ export function SessionPage() {
         <div className="flex-column flex-grow">
           <h3>Interpretaciones</h3>
           {records.map((record) => (
-            <div>
-              {record.title} at {record.start.toLocaleTimeString()} for 99s
+            <div key={record.start.toUTCString()}>
+              {record.title}&nbsp;at&nbsp;{record.start.toLocaleTimeString()}
+              &nbsp;for&nbsp;
+              {diffDateToDuration(record.start, record.end)}
             </div>
           ))}
         </div>
