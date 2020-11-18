@@ -1,3 +1,7 @@
+import { Button, IconButton, TextField } from "@material-ui/core";
+import Add from "@material-ui/icons/Add";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import PlayCircleOutlineIcon from "@material-ui/icons/PlayCircleOutline";
 import React, { useEffect, useState } from "react";
 import { diffDateToDuration } from "../utils/date";
 import { useMobile } from "../utils/hooks";
@@ -26,7 +30,6 @@ export function SessionPage() {
             isMobile && !isRecorderVisible && "hidden",
           )}
         >
-          <h3>Grabar</h3>
           <RecorderView
             onNewRecord={(r) => {
               setRecords([...records, r]);
@@ -40,12 +43,14 @@ export function SessionPage() {
             <div className="flex-row">
               <h3 className="flex-grow">Interpretaciones</h3>
               {isMobile && (
-                <button
-                  className="margin-8"
-                  onClick={() => showRecorderView(true)}
-                >
-                  Grabar
-                </button>
+                <div className="margin-8">
+                  <IconButton
+                    aria-label="Grabar"
+                    onClick={() => showRecorderView(true)}
+                  >
+                    <Add />
+                  </IconButton>
+                </div>
               )}
             </div>
             <RecordingList records={records} />
@@ -62,7 +67,7 @@ interface RecorderViewProps {
 }
 
 function RecorderView({ onDismiss, onNewRecord }: RecorderViewProps) {
-  const [title, setTitle] = useState("<untitled>");
+  const [title, setTitle] = useState("");
   const [start, setStart] = useState<Date>(new Date());
   const [recording, setRecording] = useState(false);
   const [recorder, setRecorder] = useState<Recorder | undefined>(undefined);
@@ -72,32 +77,47 @@ function RecorderView({ onDismiss, onNewRecord }: RecorderViewProps) {
   }, []);
 
   return (
-    <div className="flex-column flex-grow">
-      <label>Título</label>
-      <input
+    <div className="flex-column flex-grow rhythm-v-16">
+      <div className="flex-row">
+        {onDismiss && !recording && (
+          <IconButton aria-label="volver" onClick={onDismiss}>
+            <ArrowBackIcon />
+          </IconButton>
+        )}
+        <h3>Grabar</h3>
+      </div>
+
+      <TextField
+        id="standard-basic"
+        label="Título"
         onChange={(e) => setTitle(e.target.value)}
-        type="text"
         value={title}
       />
       <div className="flex-row">
         {recorder && (
-          <button
+          <Button
+            color="secondary"
             onClick={async () => {
               if (!recording) {
                 setStart(new Date());
                 recorder.start();
               } else {
                 const audioBlob = await recorder.stop();
-                onNewRecord({ start, end: new Date(), title, audioBlob });
+                onNewRecord({
+                  start,
+                  end: new Date(),
+                  title: title || "Sin título",
+                  audioBlob,
+                });
               }
 
               setRecording(!recording);
             }}
+            variant="contained"
           >
             {recording ? "Terminar" : "Empezar"}
-          </button>
+          </Button>
         )}
-        {onDismiss && !recording && <button onClick={onDismiss}>Volver</button>}
       </div>
     </div>
   );
@@ -111,11 +131,16 @@ function RecordingList({ records }: RecordingListProps) {
   return (
     <div className="flex-column">
       {records.map((record) => (
-        <div className="flex-row" key={record.start.toUTCString()}>
+        <div className="flex-row flex-center" key={record.start.toUTCString()}>
           {record.title}&nbsp;hora&nbsp;{record.start.toLocaleTimeString()}
           &nbsp;duración&nbsp;
           {diffDateToDuration(record.start, record.end)}
-          <button onClick={() => playAudio(record.audioBlob)}>Escuchar</button>
+          <IconButton
+            aria-label="Escuchar"
+            onClick={() => playAudio(record.audioBlob)}
+          >
+            <PlayCircleOutlineIcon />
+          </IconButton>
         </div>
       ))}
     </div>
