@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { diffDateToDuration } from "../utils/date";
 import { useMobile } from "../utils/hooks";
+import { css } from "../utils/layout";
 import { playAudio, recordAudio, Recorder } from "../utils/recorder";
 
 interface PlayRecord {
@@ -19,18 +20,21 @@ export function SessionPage() {
     <div className="flex-column">
       <h1>Sesión de hoy</h1>
       <div className="flex-row rhythm-h-16">
-        {(!isMobile || isRecorderVisible) && (
-          <div className="flex-column flex-grow">
-            <h3>Grabar</h3>
-            <RecorderView
-              onNewRecord={(r) => {
-                setRecords([...records, r]);
-                showRecorderView(false);
-              }}
-              onDismiss={isMobile ? () => showRecorderView(false) : undefined}
-            />
-          </div>
-        )}
+        <div
+          className={css(
+            "flex-column flex-grow",
+            isMobile && !isRecorderVisible && "hidden",
+          )}
+        >
+          <h3>Grabar</h3>
+          <RecorderView
+            onNewRecord={(r) => {
+              setRecords([...records, r]);
+              showRecorderView(false);
+            }}
+            onDismiss={isMobile ? () => showRecorderView(false) : undefined}
+          />
+        </div>
         {(!isMobile || !isRecorderVisible) && (
           <div className="flex-column flex-grow">
             <div className="flex-row">
