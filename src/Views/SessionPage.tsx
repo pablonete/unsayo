@@ -1,8 +1,10 @@
-import { Button, IconButton, TextField } from "@material-ui/core";
+import { IconButton, TextField } from "@material-ui/core";
 import Add from "@material-ui/icons/Add";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import PlayCircleOutlineIcon from "@material-ui/icons/PlayCircleOutline";
 import React, { useEffect, useState } from "react";
+import recordGreen from "../images/record-green.png";
+import recordingRed from "../images/recording-red.png";
 import { diffDateToDuration } from "../utils/date";
 import { useMobile } from "../utils/hooks";
 import { css } from "../utils/layout";
@@ -76,8 +78,10 @@ function RecorderView({ onDismiss, onNewRecord }: RecorderViewProps) {
     recordAudio().then(setRecorder);
   }, []);
 
+  const recordAriaLabel = recording ? "Terminar" : "Empezar";
+
   return (
-    <div className="flex-column flex-grow rhythm-v-16">
+    <div className="flex-column flex-grow">
       <div className="flex-row">
         {onDismiss && !recording && (
           <IconButton aria-label="volver" onClick={onDismiss}>
@@ -93,10 +97,11 @@ function RecorderView({ onDismiss, onNewRecord }: RecorderViewProps) {
         onChange={(e) => setTitle(e.target.value)}
         value={title}
       />
-      <div className="flex-row">
+      <div className="text-center margin-16">
         {recorder && (
-          <Button
-            color="secondary"
+          <IconButton
+            aria-label={recordAriaLabel}
+            color={recording ? "secondary" : undefined}
             onClick={async () => {
               if (!recording) {
                 setStart(new Date());
@@ -113,10 +118,13 @@ function RecorderView({ onDismiss, onNewRecord }: RecorderViewProps) {
 
               setRecording(!recording);
             }}
-            variant="contained"
           >
-            {recording ? "Terminar" : "Empezar"}
-          </Button>
+            <img
+              alt={recordAriaLabel}
+              className={css(recording && "infinite-spin")}
+              src={recording ? recordingRed : recordGreen}
+            />
+          </IconButton>
         )}
       </div>
     </div>
