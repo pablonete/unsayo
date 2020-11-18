@@ -127,8 +127,30 @@ function RecorderView({ onDismiss, onNewRecord }: RecorderViewProps) {
           </IconButton>
         )}
       </div>
+      {recording && <TimeCounter className="text-center" start={start} />}
     </div>
   );
+}
+
+interface TimeCounterProps {
+  className: string;
+  start: Date;
+}
+
+function TimeCounter({ className, start }: TimeCounterProps) {
+  const [text, setText] = useState("");
+
+  useEffect(
+    function () {
+      const intervalId = setInterval(function () {
+        setText(diffDateToDuration(start, new Date()));
+      }, 500);
+      return () => clearInterval(intervalId);
+    },
+    [start],
+  );
+
+  return <div className={className}>{text}</div>;
 }
 
 interface RecordingListProps {
