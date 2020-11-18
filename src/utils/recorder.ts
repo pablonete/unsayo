@@ -33,9 +33,3 @@ export function recordAudio() {
     resolve({ start, stop });
   });
 }
-
-export function playAudio(audioBlob: Blob) {
-  const audioUrl = URL.createObjectURL(audioBlob);
-  const audio = new Audio(audioUrl);
-  audio.play();
-}

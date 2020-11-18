@@ -1,14 +1,14 @@
-import { IconButton, TextField } from "@material-ui/core";
+import { Badge, IconButton, TextField } from "@material-ui/core";
 import Add from "@material-ui/icons/Add";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import PlayCircleOutlineIcon from "@material-ui/icons/PlayCircleOutline";
+import MusicNote from "@material-ui/icons/MusicNote";
 import React, { useEffect, useState } from "react";
 import recordGreen from "../images/record-green.png";
 import recordingRed from "../images/recording-red.png";
 import { diffDateToDuration } from "../utils/date";
 import { useMobile } from "../utils/hooks";
 import { css } from "../utils/layout";
-import { playAudio, recordAudio, Recorder } from "../utils/recorder";
+import { recordAudio, Recorder } from "../utils/recorder";
 
 interface PlayRecord {
   title: string;
@@ -138,7 +138,7 @@ interface TimeCounterProps {
 }
 
 function TimeCounter({ className, start }: TimeCounterProps) {
-  const [text, setText] = useState("");
+  const [text, setText] = useState("-:-");
 
   useEffect(
     function () {
@@ -159,18 +159,28 @@ interface RecordingListProps {
 
 function RecordingList({ records }: RecordingListProps) {
   return (
-    <div className="flex-column">
-      {records.map((record) => (
-        <div className="flex-row flex-center" key={record.start.toUTCString()}>
-          {record.title}&nbsp;hora&nbsp;{record.start.toLocaleTimeString()}
-          &nbsp;duración&nbsp;
-          {diffDateToDuration(record.start, record.end)}
-          <IconButton
-            aria-label="Escuchar"
-            onClick={() => playAudio(record.audioBlob)}
-          >
-            <PlayCircleOutlineIcon />
-          </IconButton>
+    <div className="rhythm-v-16">
+      {records.map((record, index) => (
+        <div className="flex-column" key={index}>
+          <div className="flex-row rhythm-h-8">
+            <Badge
+              badgeContent={index + 1}
+              color="primary"
+              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            >
+              <MusicNote />
+            </Badge>
+            <span></span>
+            <span className="flex-grow">{record.title}</span>
+            <span>{diffDateToDuration(record.start, record.end)}</span>
+          </div>
+
+          <audio controls>
+            <source
+              src={URL.createObjectURL(record.audioBlob)}
+              type="audio/mpeg"
+            />
+          </audio>
         </div>
       ))}
     </div>
