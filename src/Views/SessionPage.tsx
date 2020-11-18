@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { diffDateToDuration } from "../utils/date";
+import { useMobile } from "../utils/hooks";
 import { playAudio, recordAudio, Recorder } from "../utils/recorder";
 
 interface PlayRecord {
@@ -11,26 +12,52 @@ interface PlayRecord {
 
 export function SessionPage() {
   const [records, setRecords] = useState<PlayRecord[]>([]);
+  const [isMobile] = useMobile();
+  const [isRecorderVisible, showRecorderView] = useState(false);
 
   return (
     <div className="flex-column">
       <h1>Sesión de hoy</h1>
       <div className="flex-row rhythm-h-16">
-        <RecorderView onNewRecord={(r) => setRecords([...records, r])} />
-        <div className="flex-column flex-grow">
-          <h3>Interpretaciones</h3>
-          <RecordingList records={records} />
-        </div>
+        {(!isMobile || isRecorderVisible) && (
+          <div className="flex-column flex-grow">
+            <h3>Grabar</h3>
+            <RecorderView
+              onNewRecord={(r) => {
+                setRecords([...records, r]);
+                showRecorderView(false);
+              }}
+              onDismiss={isMobile ? () => showRecorderView(false) : undefined}
+            />
+          </div>
+        )}
+        {(!isMobile || !isRecorderVisible) && (
+          <div className="flex-column flex-grow">
+            <div className="flex-row">
+              <h3 className="flex-grow">Interpretaciones</h3>
+              {isMobile && (
+                <button
+                  className="margin-8"
+                  onClick={() => showRecorderView(true)}
+                >
+                  Grabar
+                </button>
+              )}
+            </div>
+            <RecordingList records={records} />
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
 interface RecorderViewProps {
+  onDismiss?(): void;
   onNewRecord(record: PlayRecord): void;
 }
 
-function RecorderView({ onNewRecord }: RecorderViewProps) {
+function RecorderView({ onDismiss, onNewRecord }: RecorderViewProps) {
   const [title, setTitle] = useState("<untitled>");
   const [start, setStart] = useState<Date>(new Date());
   const [recording, setRecording] = useState(false);
@@ -48,7 +75,7 @@ function RecorderView({ onNewRecord }: RecorderViewProps) {
         type="text"
         value={title}
       />
-      <div>
+      <div className="flex-row">
         {recorder && (
           <button
             onClick={async () => {
@@ -66,6 +93,7 @@ function RecorderView({ onNewRecord }: RecorderViewProps) {
             {recording ? "Terminar" : "Empezar"}
           </button>
         )}
+        {onDismiss && !recording && <button onClick={onDismiss}>Volver</button>}
       </div>
     </div>
   );
