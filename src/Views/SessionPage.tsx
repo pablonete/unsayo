@@ -2,6 +2,7 @@ import { Badge, IconButton, TextField } from "@material-ui/core";
 import Add from "@material-ui/icons/Add";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import MusicNote from "@material-ui/icons/MusicNote";
+import NoSleep from "nosleep.js";
 import React, { useEffect, useState } from "react";
 import recordGreen from "../images/record-green.png";
 import recordingRed from "../images/recording-red.png";
@@ -73,10 +74,22 @@ function RecorderView({ onDismiss, onNewRecord }: RecorderViewProps) {
   const [start, setStart] = useState<Date>(new Date());
   const [recording, setRecording] = useState(false);
   const [recorder, setRecorder] = useState<Recorder | undefined>(undefined);
+  const [noSleep] = useState(new NoSleep());
 
   useEffect(function () {
     recordAudio().then(setRecorder);
   }, []);
+
+  useEffect(
+    function () {
+      if (recording) {
+        noSleep.enable();
+      } else {
+        noSleep.disable();
+      }
+    },
+    [recording, noSleep],
+  );
 
   const recordAriaLabel = recording ? "Terminar" : "Empezar";
 
